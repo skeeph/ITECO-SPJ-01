@@ -1,6 +1,7 @@
 package ru.volnenko.se.command.task;
 
 import org.springframework.stereotype.Component;
+import ru.volnenko.se.api.repository.ITaskRepository;
 import ru.volnenko.se.command.AbstractCommand;
 
 /**
@@ -8,6 +9,12 @@ import ru.volnenko.se.command.AbstractCommand;
  */
 @Component
 public final class TaskClearCommand extends AbstractCommand {
+    
+    private final ITaskRepository taskRepository;
+    
+    public TaskClearCommand(ITaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
+    }
 
     @Override
     public String description() {
@@ -21,7 +28,7 @@ public final class TaskClearCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        bootstrap.getTaskRepository().clear();
+        taskRepository.clear();
         System.out.println("[ALL TASK REMOVED]");
     }
 

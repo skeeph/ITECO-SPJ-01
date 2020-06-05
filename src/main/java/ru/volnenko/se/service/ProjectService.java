@@ -1,9 +1,9 @@
 package ru.volnenko.se.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.volnenko.se.api.repository.IProjectRepository;
 import ru.volnenko.se.entity.Project;
-import ru.volnenko.se.repository.ProjectRepository;
 
 import java.util.Collection;
 import java.util.List;
@@ -16,6 +16,7 @@ public final class ProjectService implements ru.volnenko.se.api.service.IProject
 
     private final IProjectRepository projectRepository;
 
+    @Autowired
     public ProjectService(final IProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
     }

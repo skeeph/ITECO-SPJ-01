@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.volnenko.se.api.service.IDomainService;
 import ru.volnenko.se.api.service.IProjectService;
 import ru.volnenko.se.api.service.ITaskService;
-import ru.volnenko.se.api.service.ServiceLocator;
 import ru.volnenko.se.entity.Domain;
 
 /**
