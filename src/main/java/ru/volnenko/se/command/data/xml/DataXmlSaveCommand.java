@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import ru.volnenko.se.api.service.IDomainService;
 import ru.volnenko.se.command.AbstractCommand;
 import ru.volnenko.se.constant.DataConstant;
 import ru.volnenko.se.entity.Domain;
+import ru.volnenko.se.events.CommandEvent;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -49,5 +51,12 @@ public final class DataXmlSaveCommand extends AbstractCommand {
         Files.write(file.toPath(), data);
         System.out.println("[OK]");
     }
+
+    @Override
+    @EventListener(condition = "#event.command eq 'data-xml-save'")
+    public void processEvent(CommandEvent event) throws Exception {
+        execute();
+    }
+
 
 }

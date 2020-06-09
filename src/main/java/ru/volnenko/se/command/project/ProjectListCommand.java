@@ -1,9 +1,11 @@
 package ru.volnenko.se.command.project;
 
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import ru.volnenko.se.api.service.IProjectService;
 import ru.volnenko.se.command.AbstractCommand;
 import ru.volnenko.se.entity.Project;
+import ru.volnenko.se.events.CommandEvent;
 
 /**
  * @author Denis Volnenko
@@ -35,5 +37,12 @@ public final class ProjectListCommand extends AbstractCommand {
         }
         System.out.println();
     }
+
+    @Override
+    @EventListener(condition = "#event.command eq 'project-list'")
+    public void processEvent(CommandEvent event) {
+        execute();
+    }
+
 
 }

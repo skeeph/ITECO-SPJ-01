@@ -1,6 +1,7 @@
 package ru.volnenko.se.command.data.bin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import ru.volnenko.se.api.service.IProjectService;
 import ru.volnenko.se.api.service.ITaskService;
@@ -8,6 +9,7 @@ import ru.volnenko.se.command.AbstractCommand;
 import ru.volnenko.se.constant.DataConstant;
 import ru.volnenko.se.entity.Project;
 import ru.volnenko.se.entity.Task;
+import ru.volnenko.se.events.CommandEvent;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -59,6 +61,12 @@ public final class DataBinarySaveCommand extends AbstractCommand {
 
         System.out.println("[OK]");
         System.out.println();
+    }
+
+    @Override
+    @EventListener(condition = "#event.command eq 'data-bin-save'")
+    public void processEvent(CommandEvent event) throws Exception {
+        execute();
     }
 
 }

@@ -1,41 +1,30 @@
 package ru.volnenko.se.controller;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import ru.volnenko.se.api.controller.Executor;
 import ru.volnenko.se.api.controller.InputReader;
-import ru.volnenko.se.command.AbstractCommand;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import ru.volnenko.se.events.CommandEvent;
 
 @Controller
 public class ExecutorImpl implements Executor {
     private final InputReader inputReader;
-    private final Map<String, AbstractCommand> commands;
+    private final ApplicationEventPublisher publisher;
 
-    public ExecutorImpl(InputReader inputReader, List<? extends AbstractCommand> commandsList) {
+    public ExecutorImpl(InputReader inputReader, ApplicationEventPublisher publisher) {
         this.inputReader = inputReader;
-        commands = new HashMap<>();
-        for (AbstractCommand abstractCommand : commandsList) {
-            commands.put(abstractCommand.command(), abstractCommand);
-        }
+        this.publisher = publisher;
     }
 
     @Override
-    public void start() throws Exception {
+    public void start() {
         System.out.println("*** WELCOME TO TASK MANAGER ***");
         String command = "";
         while (!"exit".equals(command)) {
             command = inputReader.nextLine();
-            execute(command);
+            CommandEvent event = new CommandEvent(command);
+            publisher.publishEvent(event);
         }
     }
 
-    private void execute(final String command) throws Exception {
-        if (command == null || command.isEmpty()) return;
-        final AbstractCommand abstractCommand = commands.get(command);
-        if (abstractCommand == null) return;
-        abstractCommand.execute();
-    }
 }

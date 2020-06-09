@@ -1,6 +1,7 @@
 package ru.volnenko.se.command.data.bin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import ru.volnenko.se.api.service.IProjectService;
 import ru.volnenko.se.api.service.ITaskService;
@@ -8,6 +9,7 @@ import ru.volnenko.se.command.AbstractCommand;
 import ru.volnenko.se.constant.DataConstant;
 import ru.volnenko.se.entity.Project;
 import ru.volnenko.se.entity.Task;
+import ru.volnenko.se.events.CommandEvent;
 
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
@@ -47,6 +49,12 @@ public final class DataBinaryLoadCommand extends AbstractCommand {
         objectInputStream.close();
         fileInputStream.close();
         System.out.println("[OK]");
+    }
+
+    @Override
+    @EventListener(condition = "#event.command eq 'data-bin-load'")
+    public void processEvent(CommandEvent event) throws Exception {
+        execute();
     }
 
     private void loadProjects(final Object value) {

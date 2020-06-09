@@ -1,7 +1,9 @@
 package ru.volnenko.se.command.system;
 
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import ru.volnenko.se.command.AbstractCommand;
+import ru.volnenko.se.events.CommandEvent;
 
 import java.util.List;
 
@@ -32,6 +34,12 @@ public final class HelpCommand extends AbstractCommand {
         for (AbstractCommand command: commandsList) {
             System.out.println(command.command()+ ": " + command.description());
         }
+    }
+
+    @Override
+    @EventListener(condition = "#event.command eq 'help'")
+    public void processEvent(CommandEvent event) throws Exception {
+        execute();
     }
 
 }
